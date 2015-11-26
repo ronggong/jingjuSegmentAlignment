@@ -127,6 +127,19 @@ class ConcatenateSegment(object):
 
     ################################################# public methods ###################################################
 
+    def pitchtrackNormalization(self, pitchtrack):
+
+        '''
+        normalize pitch to range [0,1]
+        :param pitchtrack:
+        :return:
+        '''
+        notePtNorm = np.array(pitchtrack[:])
+        notePtNorm = notePtNorm-min(notePtNorm)
+        notePtNorm = notePtNorm/max(notePtNorm)
+
+        return notePtNorm.tolist()
+
     def resampling(self, notePts, noteStartingFrame, noteEndingFrame, lenNotePts_target):
         '''
         :param notePts_s:

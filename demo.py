@@ -48,6 +48,10 @@ notePts_t, noteStartingFrameConcatenate_t, noteEndingFrameConcatenate_t = \
 notePts_s, noteStartingFrameConcatenate_s, noteEndingFrameConcatenate_s = \
     cs1.generateNotePitchtrack(noteStartingFrame_s, noteEndingFrame_s, midiNote_s)
 
+# normalization pitch track
+notePts_t = cs1.pitchtrackNormalization(notePts_t)
+notePts_s = cs1.pitchtrackNormalization(notePts_s)
+
 # resampling note
 if len(notePts_t) > len(notePts_s):
     notePts_s, noteStartingFrameConcatenate_s, noteEndingFrameConcatenate_s \
@@ -87,6 +91,9 @@ segmentPts_s,boundaries_s,target_s = cs1.readRepresentation(studentRepresentatio
 
 concatenatePts_t,segStartingFrame_t,segEndingFrame_t = cs1.concatenate(segmentPts_t)
 concatenatePts_s,segStartingFrame_s,segEndingFrame_s = cs1.concatenate(segmentPts_s)
+
+concatenatePts_t = cs1.pitchtrackNormalization(concatenatePts_t)
+concatenatePts_s = cs1.pitchtrackNormalization(concatenatePts_s)
 
 # resampling note
 if len(notePts_t) > len(notePts_s):
