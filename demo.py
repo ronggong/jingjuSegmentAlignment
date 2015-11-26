@@ -19,8 +19,8 @@ outputFileFolder = './outputFiles/'
 teacherTitle = 'weiguojia_section_pro'
 studentTitle = 'weiguojia_section_amateur'
 
-teacherMonoNoteOutFilename = segmentFileFolder+teacherTitle+'_monoNoteOut_midi.txt'
-studentMonoNoteOutFilename = segmentFileFolder+studentTitle+'_monoNoteOut_midi.txt'
+teacherMonoNoteOutFilename = segmentFileFolder+teacherTitle+'_monoNoteOut_midi.csv'
+studentMonoNoteOutFilename = segmentFileFolder+studentTitle+'_monoNoteOut_midi.csv'
 
 teacherRepresentationFilename = segmentFileFolder+teacherTitle+'_representation.json'
 studentRepresentationFilename = segmentFileFolder+studentTitle+'_representation.json'
