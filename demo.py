@@ -143,23 +143,30 @@ alignedSeg_s = align1.alignment2(segStartingFramePath_s, segEndingFramePath_s,
 ############################################ save aligned file #########################################################
 
 def stral(al):
-    out = ''
-    for c in al:
-        out = out+str(c)+' '
-    return out
+        out = ''
+        for ii, c in enumerate(al):
+            if ii != len(al)-1:
+                out = out+str(c)+' '
+            else:
+                out = out+str(c)
+        return out
 
 with open(teacherNoteAlignedFilename, 'w+') as outfile:
-    for al in alignedNote_t:
-        outfile.write(str(al[0])+','+stral(al[1])+'\n')
+        outfile.write('teacher'+','+'student'+'\n')
+        for al in alignedNote_t:
+            outfile.write(str(al[0])+','+stral(al[1])+'\n')
 
 with open(studentNoteAlignedFilename, 'w+') as outfile:
+    outfile.write('student'+','+'teacher'+'\n')
     for al in alignedNote_s:
         outfile.write(str(al[0])+','+stral(al[1])+'\n')
 
 with open(teacherSegAlignedFilename, 'w+') as outfile:
+    outfile.write('teacher'+','+'student'+'\n')
     for al in alignedSeg_t:
         outfile.write(str(al[0])+','+stral(al[1])+'\n')
 
 with open(studentSegAlignedFilename, 'w+') as outfile:
+    outfile.write('student'+','+'teacher'+'\n')
     for al in alignedSeg_s:
         outfile.write(str(al[0])+','+stral(al[1])+'\n')
