@@ -60,6 +60,9 @@ class Alignment(object):
                 if intersection >= (e_s-s_s)*th or intersection >= (e_t-s_t)*th:
                     aligned_ii.append(jj)
 
+            if not aligned_ii:
+                aligned_ii = 'null'
+
             aligned.append([ii,aligned_ii])
 
         return aligned
