@@ -19,8 +19,14 @@ class Alignment(object):
             for jj in range(0,len(path)):
                 if noteStartingFrame[ii] <= path[jj] <= noteEndingFrame[ii]:
                     npi.append(jj)
-            noteStartingFramePath.append(npi[0])
-            noteEndingFramePath.append(npi[-1])
+
+            if len(npi) < 2:
+                s,e = None,None
+            else:
+                s,e = npi[0],npi[-1]
+
+            noteStartingFramePath.append(s)
+            noteEndingFramePath.append(e)
 
         return noteStartingFramePath, noteEndingFramePath
 
@@ -41,9 +47,19 @@ class Alignment(object):
             aligned_ii = []
             s_t = noteStartingFramePath_t[ii]
             e_t = noteEndingFramePath_t[ii]
+
+            # the case if None
+            if not s_t or not e_t:
+                aligned.append([ii,aligned_ii])
+                continue
+
             for jj in range(len(noteStartingFramePath_s)):
                 s_s = noteStartingFramePath_s[jj]
                 e_s = noteEndingFramePath_s[jj]
+
+                # the case of None
+                if not s_s or not e_s:
+                    continue
 
                 if s_t <= s_s and e_t >= e_s:
                     intersection = e_s-s_s
@@ -59,9 +75,6 @@ class Alignment(object):
 
                 if intersection >= (e_s-s_s)*th or intersection >= (e_t-s_t)*th:
                     aligned_ii.append(jj)
-
-            if not aligned_ii:
-                aligned_ii = 'null'
 
             aligned.append([ii,aligned_ii])
 

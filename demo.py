@@ -13,11 +13,15 @@ import plottingCode as pc
 import alignment as align
 
 # definition
-segmentFileFolder = './segmentFiles/'
-outputFileFolder = './outputFiles/'
+# segmentFileFolder = './segmentFiles/'
+# outputFileFolder = './outputFiles/'
 
-teacherTitle = 'weiguojia_section_pro'
-studentTitle = 'weiguojia_section_amateur'
+mp3Folder = '/Users/gong/Documents/github/MTG/ICASSP2016/exampleAudios/07/'
+segmentFileFolder = mp3Folder
+outputFileFolder = mp3Folder
+
+teacherTitle = 'teacher'
+studentTitle = 'student'
 
 teacherMonoNoteOutFilename = segmentFileFolder+teacherTitle+'_monoNoteOut_midi.csv'
 studentMonoNoteOutFilename = segmentFileFolder+studentTitle+'_monoNoteOut_midi.csv'
@@ -95,6 +99,9 @@ concatenatePts_s,segStartingFrame_s,segEndingFrame_s = cs1.concatenate(segmentPt
 concatenatePts_t = cs1.pitchtrackNormalization(concatenatePts_t)
 concatenatePts_s = cs1.pitchtrackNormalization(concatenatePts_s)
 
+# print len(segmentPts_t), len(segmentPts_s)
+# print segStartingFrame_t, segStartingFrame_s
+
 # resampling note
 if len(notePts_t) > len(notePts_s):
     concatenatePts_s, noteStartingFrameConcatenate_s, noteEndingFrameConcatenate_s \
@@ -109,21 +116,7 @@ path = dtwSankalp.dtw1d_generic(concatenatePts_t,concatenatePts_s)
 path_t = path[0]
 path_s = path[1]
 
-# alignment
-# frameInd_t = align1.path2frameInd(path_t,concatenateMap_t)
-# pathIndSegment_t = align1.indexSegmentation(frameInd_t, boundaries_t)
-#
-# frameInd_s = align1.path2frameInd(path_s,concatenateMap_s)
-# pathIndSegment_s = align1.indexSegmentation(frameInd_s, boundaries_s)
-#
-# alignDict_t = align1.alignment(pathIndSegment_t,pathIndSegment_s)
-# alignDict_s = align1.alignment(pathIndSegment_s,pathIndSegment_t)
-#
-# # plotting
-# pc.plotAll(segmentPts_t,boundaries_t,target_t,alignDict_t,
-#             segmentPts_s,boundaries_s,target_s,alignDict_s)
-# print alignDict_t
-# print alignDict_s
+# print path_t, path_s
 
 # get path index for each note
 segStartingFramePath_t, segEndingFramePath_t \
@@ -143,30 +136,25 @@ alignedSeg_s = align1.alignment2(segStartingFramePath_s, segEndingFramePath_s,
 ############################################ save aligned file #########################################################
 
 def stral(al):
-        out = ''
-        for ii, c in enumerate(al):
-            if ii != len(al)-1:
-                out = out+str(c)+' '
-            else:
-                out = out+str(c)
-        return out
+    out = ''
+    for ii, c in enumerate(al):
+        if ii != len(al)-1:
+            out = out+str(c)+' '
+        else:
+            out = out+str(c)
+    return out
 
-with open(teacherNoteAlignedFilename, 'w+') as outfile:
+def writeAlignedFile(alignedFilename, alignedResult):
+    with open(alignedFilename, 'w+') as outfile:
         outfile.write('teacher'+','+'student'+'\n')
-        for al in alignedNote_t:
-            outfile.write(str(al[0])+','+stral(al[1])+'\n')
+        for al in alignedResult:
+            if not al[1]:
+                alignStr = 'null'
+            else:
+                alignStr = stral(al[1])
+            outfile.write(str(al[0])+','+alignStr+'\n')
 
-with open(studentNoteAlignedFilename, 'w+') as outfile:
-    outfile.write('student'+','+'teacher'+'\n')
-    for al in alignedNote_s:
-        outfile.write(str(al[0])+','+stral(al[1])+'\n')
-
-with open(teacherSegAlignedFilename, 'w+') as outfile:
-    outfile.write('teacher'+','+'student'+'\n')
-    for al in alignedSeg_t:
-        outfile.write(str(al[0])+','+stral(al[1])+'\n')
-
-with open(studentSegAlignedFilename, 'w+') as outfile:
-    outfile.write('student'+','+'teacher'+'\n')
-    for al in alignedSeg_s:
-        outfile.write(str(al[0])+','+stral(al[1])+'\n')
+writeAlignedFile(teacherNoteAlignedFilename, alignedNote_t)
+writeAlignedFile(studentNoteAlignedFilename, alignedNote_s)
+writeAlignedFile(teacherSegAlignedFilename, alignedSeg_t)
+writeAlignedFile(studentSegAlignedFilename, alignedSeg_s)

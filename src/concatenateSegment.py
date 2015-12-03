@@ -17,7 +17,7 @@ class ConcatenateSegment(object):
         :return: noteStartingTime, noteDurationTime
         '''
 
-        monoNoteOut = np.loadtxt(monoNoteOut_filename,delimiter=',',usecols=[0,1,2,3])
+        monoNoteOut = np.loadtxt(monoNoteOut_filename,delimiter=',',usecols=[0,1,2,3],skiprows=1)
         noteStartingTime = monoNoteOut[:,0]
         noteDurTime = monoNoteOut[:,3]
         midiNote = monoNoteOut[:,1]
